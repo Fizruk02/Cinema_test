@@ -8,22 +8,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container">
-    <h1>Films</h1>
-    <div class="row">
-        @foreach($films as $film)
-            <div class="col-md-6">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $film->title }}</h5>
-                        <p class="card-text">{{ $film->description }}</p>
-                        <p class="card-text">Время:  {{ date('H:i', $film->duration) }}</p>
-                        <p class="card-text">Возрастное ограничение: {{ $film->age_limit }}+</p>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
-</div>
+@extends('home')
 </body>
 </html>

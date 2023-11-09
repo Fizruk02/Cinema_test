@@ -9,7 +9,7 @@ class FilmsController extends Controller
 {
     public function show()
     {
-        $films = Films::all();
+        $films = Films::all()->where('status', '=', 1);
         return view("main", compact('films'));
     }
 }

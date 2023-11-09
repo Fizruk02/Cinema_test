@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property mixed $title
+ */
 class Films extends Model
 {
-    use HasFactory;
+    protected $fillable = ['title', 'description', 'duration', 'age_limit', 'photo'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 }
