@@ -6,10 +6,10 @@ use App\Models\Films;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CreateFilmController extends Controller
+class FilmController extends Controller
 {
     public function create(){
-        return view('create');
+        return view('create_film');
     }
 
     public function store(Request $request)
@@ -41,11 +41,28 @@ class CreateFilmController extends Controller
 
             $file->storeAs($folder, $filename, 'public');
 
-            // Обновляем путь к фото в модели
             $films->type_photo = $extension;
             $films->save();
         }
 
         return redirect()->back()->with('success', 'Фильм успешно создан.');
+    }
+
+    public function edit(Request $request){
+        dd($request);
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $film = Films::find($request->input('id'));
+        return view('edit_film', compact('film'));
+    }
+
+    public function update(Request $request){
+
     }
 }

@@ -6,7 +6,7 @@ use App\Models\Films;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CreateSessionController extends Controller
+class SessionController extends Controller
 {
     public function create(){
         $films = Films::all()->where('status', '=', 0);
