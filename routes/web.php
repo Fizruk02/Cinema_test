@@ -25,11 +25,10 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/edit/{film}', [FilmController::class, 'edit'])->name('film.edit');
         Route::post('/edit', [FilmController::class, 'update'])->name('film.update');
         Route::get('/delete/{film}', [FilmController::class, 'delete'])->name('film.delete');
-    });
-
-    Route::prefix('session')->group(function () {
-        Route::get('/create', [SessionController::class, 'create'])->name('session.create');
-        Route::post('/store', [SessionController::class, 'store'])->name('session.store');
+            Route::prefix('session')->group(function () {
+                Route::get('/create', [SessionController::class, 'create'])->name('session.create');
+                Route::post('/store', [SessionController::class, 'store'])->name('session.store');
+        });
     });
 });
 
