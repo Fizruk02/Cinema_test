@@ -2,35 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SessionStoreRequest;
 use App\Models\Films;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class SessionController extends Controller
 {
     public function create(){
         $films = Films::all()->where('status', '=', 0);
-        return view('set_session', compact('films'));
+        return view('film.session.create', compact('films'));
     }
 
-    public function store(Request $request)
+    public function store(SessionStoreRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'film_id' => 'required|numeric',
-            'date_time' => 'required|date',
-            'payment' =>   'required|regex:/^\d{1,3}(\.\d{1,2})?$/'//['required', 'numeric', 'regex:/^\d*(\.\d{1,2})?$/'],
-        ]);
+        $validatedData = $request->validated();
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $films = Films::find($request->input('film_id'));
+        $films = Films::find($validatedData['film_id']);
         $films->status = 1;
-        $films->date = $request->input('date_time');
-        $films->payment = $request->input('payment');
+        $films->date = $validatedData['date_time'];
+        $films->payment = $validatedData['payment'];
         $films->save();
 
-        return redirect()->back()->with('success', 'Сеанс успешно создан.');
+        return redirect()->route('films')->with('message', 'Сеанс успешно создан!');
     }
 }

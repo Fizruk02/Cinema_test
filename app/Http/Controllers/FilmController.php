@@ -2,35 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilmStoreRequest;
+use App\Http\Requests\FilmUpdateRequest;
 use App\Models\Films;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class FilmController extends Controller
 {
     public function create(){
-        return view('create_film');
+        return view('film.create');
     }
 
-    public function store(Request $request)
+    public function store(FilmStoreRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'duration' => 'required|numeric',
-            'age_limit' => 'required|numeric',
-            'photo' => 'required|image',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        $validatedData = $request->validated();
 
         $films = new Films();
-        $films->title = $request->input('title');
-        $films->description = $request->input('description');
-        $films->duration = $request->input('duration');
-        $films->age_limit = $request->input('age_limit');
+        $films->title = $validatedData['title'];
+        $films->description = $validatedData['description'];
+        $films->duration = $validatedData['duration'];
+        $films->age_limit = $validatedData['age_limit'];
         $films->save();
 
         if ($request->hasFile('photo')) {
@@ -45,24 +35,32 @@ class FilmController extends Controller
             $films->save();
         }
 
-        return redirect()->back()->with('success', 'Фильм успешно создан.');
+        return redirect()->route('films')->with('message', 'Фильм успешно добавлен!');
     }
 
-    public function edit(Request $request){
-        dd($request);
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|numeric'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $film = Films::find($request->input('id'));
-        return view('edit_film', compact('film'));
+    public function edit(Films $film){
+        return view('film.edit', compact('film'));
     }
 
-    public function update(Request $request){
+    public function update(FilmUpdateRequest $request)
+    {
+        $validatedData = $request->validated();
 
+        $films = Films::find($validatedData['film_id']);
+        $films->title = $validatedData['title'];
+        $films->description = $validatedData['description'];
+        $films->duration = $validatedData['duration'];
+        $films->age_limit = $validatedData['age_limit'];
+        $films->status = $validatedData['status'];
+        $films->date = $validatedData['date_time'];
+        $films->payment = $validatedData['payment'];
+        $films->save();
+
+        return redirect()->route('films')->with('message', 'Сеанс успешно изменён!');
+    }
+
+    public function delete(Films $film){
+        $film->delete();
+        return redirect()->route('films')->with('message', 'Фильм успешно создан!');
     }
 }

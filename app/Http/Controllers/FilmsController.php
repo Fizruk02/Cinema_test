@@ -19,22 +19,7 @@ class FilmsController extends Controller
             }
         }
 
-        $films = Films::where('status', 1)
-            ->orderBy('date', 'desc')
-            ->get();
-
-        $filteredFilms = [];
-        $previousFilmEndTime = null;
-
-        foreach ($films as $film) {
-            $currentFilmStartTime = Carbon::parse($film->date);
-
-            if ($previousFilmEndTime === null || $previousFilmEndTime->diff($currentFilmStartTime)->i >= 30) {
-                $filteredFilms[] = $film;
-                $previousFilmEndTime = $currentFilmStartTime->addMinutes($film->duration);
-            }
-        }
-
-        return view('films_card', compact('filteredFilms', 'admin'));
+        $films = Films::where('status', 1)->orderBy('date')->get();
+        return view('film.index', compact('films', 'admin'));
     }
 }

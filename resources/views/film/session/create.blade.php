@@ -5,11 +5,14 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Назначить сеанс</div>
-
+                @if(session()->has('message'))
+                    <div class="alert alert-danger">
+                        {{ session()->get('message') }}
+                    </div>
+                @endif
                 <div class="card-body">
-                    <form method="POST" action="{{ route('store_session', ['session' => 'placeholder']) }}">
+                    <form method="POST" action="{{ route('session.store') }}">
                         @csrf
-
                         <div class="form-group row">
                             <label for="film_id" class="col-md-4 col-form-label text-md-right">Фильм</label>
                             <div class="col-md-6">
