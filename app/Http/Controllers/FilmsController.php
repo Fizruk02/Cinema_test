@@ -7,7 +7,7 @@ use App\Models\Films;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class FilmsController extends Controller
+class FilmsController extends BaseController
 {
     public function show()
     {

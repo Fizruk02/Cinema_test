@@ -28,7 +28,6 @@ class FilmStoreRequest extends FormRequest
             'description' => 'required',
             'duration' => 'required|numeric',
             'age_limit' => 'required|numeric',
-            'photo' => 'required|image',
         ];
     }
 }
